@@ -1,25 +1,36 @@
 package main
 
 import (
-	"fmt"
+	"database/sql"
+	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/lib/pq"
+	"jaketrent.com/survey-api/survey"
 	"log"
-	"net/http"
 	"os"
 )
 
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
+func hasDatabase(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("db", db)
+		c.Next()
 	}
-	return fallback
 }
 
 func main() {
-	addr := ":" + getEnv("PORT", "3000")
-	http.HandleFunc("/", hello)
-	log.Fatal(http.ListenAndServe(addr, nil))
-}
+	connStr := os.Getenv("DATABASE_URL")
+	db, err := sql.Open("postgres", connStr)
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello world from Go")
+	if err != nil {
+		log.Fatal("Db unable to connect", err)
+	}
+	defer db.Close()
+
+	router := gin.Default()
+
+	router.Use(hasDatabase(db))
+
+	survey.Mount(router)
+
+	router.Run()
 }
