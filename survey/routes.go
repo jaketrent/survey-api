@@ -34,7 +34,7 @@ func create(c *gin.Context) {
 		fmt.Println("survey create req error", err)
 		return
 	}
-	survey, err = insert(db, survey)
+	survey, err = insertSurvey(db, survey)
 
 	if err == nil {
 		c.JSON(http.StatusCreated, ok{
