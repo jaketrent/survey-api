@@ -1,3 +1,15 @@
+## Install dependencies
+
+```
+brew install dep
+dep ensure
+```
+
+## Deploy
+
+```
+up
+```
 
 
 ## DB Migration
