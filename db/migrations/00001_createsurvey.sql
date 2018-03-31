@@ -1,5 +1,7 @@
-begin;
+-- +goose Up
+-- SQL in this section is executed when the migration is applied.
 
+begin;
 
 create sequence survey_id_seq
 start with 1
@@ -24,7 +26,7 @@ cache 1;
 
 create table survey (
 id int primary key default nextval('survey_id_seq'),
-desc text not null,
+description text not null,
 created date default now()
 );
 
@@ -45,5 +47,21 @@ value text not null,
 user_info varchar(255),
 created date default now()
 );
+
+end;
+
+
+-- +goose Down
+-- SQL in this section is executed when the migration is rolled back.
+
+begin;
+
+drop sequence survey_id_seq;
+drop sequence question_id_seq;
+drop sequence answer_id_seq;
+drop table survey;
+drop type question_type;
+drop table question;
+drop table answer;
 
 end;

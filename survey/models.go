@@ -1,12 +1,12 @@
 package survey
 
 type Survey struct {
-	Id   int    `json:"id"`
-	Desc string `json:"desc"`
+	Id          int    `json:"id"`
+	Description string `json:"description"`
 }
 
 type Question struct {
-	Id           int    `json:"questionId"`
+	Id           int    `json:"id"`
 	SurveyId     int    `json:"surveyId"`
 	Prompt       string `json:"prompt"`
 	QuestionType string `json:"questionType"`
