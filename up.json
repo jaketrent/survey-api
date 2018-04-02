@@ -2,8 +2,15 @@
   "name": "survey-api",
   "profile": "licketybit",
   "regions": ["us-west-2"],
-  "hooks": {
-    "build": "GOOS=linux GOARCH=amd64 go build -o server cmd/api/main.go",
-    "clean": "rm server"
+  "lambda": {
+    "memory": 128
+  },
+  "stages": {
+    "staging": {
+      "hooks": {
+        "build": "GOOS=linux GOARCH=amd64 go build -o server cmd/api/main.go",
+        "clean": "rm server"
+      }
+    }
   }
 }
