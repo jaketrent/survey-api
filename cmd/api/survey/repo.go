@@ -10,7 +10,7 @@ func findAll(db *sql.DB) ([]*Survey, error) {
 	const query = `
 select id
 , description
-from survey_api_survey
+from survey
 `
 	rows, err := db.Query(query)
 	if err != nil {
@@ -31,7 +31,7 @@ from survey_api_survey
 
 func insertSurvey(db *sql.DB, survey *Survey) (*Survey, error) {
 	const query = `
-insert into survey_api_survey
+insert into survey
 ( description
 ) values
 ( $1
@@ -43,7 +43,7 @@ insert into survey_api_survey
 
 func updateSurvey(db *sql.DB, survey *Survey) (*Survey, error) {
 	const query = `
-update survey_api_survey
+update survey
 set description = $1
 where id = $2
 returning description
@@ -65,7 +65,7 @@ func deleteSurvey(db *sql.DB, id int) error {
 	}
 
 	result, err = tx.Exec(`
-delete from survey_api_answer
+delete from answer
 where question_id in (
   select id
   from question
@@ -78,7 +78,7 @@ where question_id in (
 	}
 
 	result, err = tx.Exec(`
-delete from survey_api_question
+delete from question
 where survey_id = $1;
 `, id)
 
@@ -88,7 +88,7 @@ where survey_id = $1;
 	}
 
 	result, err = tx.Exec(`
-delete from survey_api_survey
+delete from survey
 where id = $1;
 `, id)
 	count, err = result.RowsAffected()
