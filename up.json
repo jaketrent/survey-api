@@ -4,7 +4,8 @@
   "regions": ["us-west-2"],
   "hooks": {
     "build": "GOOS=linux GOARCH=amd64 go build -o server main.go",
-    "clean": "rm server"
+    "clean": "rm server",
+    "postdeploy": "cd db/migrations && goose postgres $DATABASE_URL up"
   },
   "lambda": {
     "memory": 128
