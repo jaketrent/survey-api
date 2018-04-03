@@ -1,6 +1,6 @@
 {
   "name": "survey-api",
-  "profile": "licketybit",
+  "profile": "licketybit-up",
   "regions": ["us-west-2"],
   "hooks": {
     "build": "GOOS=linux GOARCH=amd64 go build -o server main.go",
