@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
+	"jaketrent.com/survey-api/ping"
 	"jaketrent.com/survey-api/survey"
 	"log"
 	"os"
@@ -31,6 +32,7 @@ func main() {
 
 	router.Use(hasDatabase(db))
 
+	ping.Mount(router)
 	survey.Mount(router)
 
 	log.Print("Starting app...")
