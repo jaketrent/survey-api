@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -22,13 +23,16 @@ type bad struct {
 }
 
 func listSurvey(c *gin.Context) {
+	log.Print("Survey listing...")
 	db, _ := c.MustGet("db").(*sql.DB)
 	surveys, err := findAll(db)
 	if err == nil {
+		log.Printf("Survey list res ok... (count: %v)", len(surveys))
 		c.JSON(http.StatusOK, ok{
 			Data: surveys,
 		})
 	} else {
+		log.Printf("Survey list res bad... (msg: %s)", err.Error())
 		c.JSON(http.StatusInternalServerError, bad{
 			Errors: []clienterr{{Title: "list surveys error: " + err.Error(), Status: http.StatusInternalServerError}},
 		})

@@ -18,6 +18,7 @@ func hasDatabase(db *sql.DB) gin.HandlerFunc {
 }
 
 func main() {
+	log.Print("Configuring app...")
 	connStr := os.Getenv("DATABASE_URL")
 	db, err := sql.Open("postgres", connStr)
 
@@ -32,5 +33,6 @@ func main() {
 
 	survey.Mount(router)
 
+	log.Print("Starting app...")
 	router.Run()
 }

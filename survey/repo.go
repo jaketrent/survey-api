@@ -4,9 +4,11 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 )
 
 func findAll(db *sql.DB) ([]*Survey, error) {
+	log.Print("Find all surveys...")
 	const query = `
 select id
 , description
@@ -14,6 +16,7 @@ from survey
 `
 	rows, err := db.Query(query)
 	if err != nil {
+		log.Printf("Find all surveys error (msg: %s)", err.Error())
 		return nil, err
 	}
 	defer rows.Close()
@@ -22,10 +25,12 @@ from survey
 	for rows.Next() {
 		var survey Survey
 		if err := rows.Scan(&survey.Id, &survey.Description); err != nil {
+			log.Printf("Find all surveys row scan error (msg: %s)", err.Error())
 			return nil, err
 		}
 		surveys = append(surveys, &survey)
 	}
+	log.Printf("Find all surveys success (count: %v)", len(surveys))
 	return surveys, nil
 }
 
