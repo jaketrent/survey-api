@@ -8,27 +8,35 @@ import (
 )
 
 func findAll(db *sql.DB) ([]*Survey, error) {
-	log.Print("Find all surveys...")
 	const query = `
 select id
 , description
 from survey
 `
+	log.Print("Find all surveys...")
 	rows, err := db.Query(query)
+	log.Print("Find all surveys, post query")
 	if err != nil {
 		log.Printf("Find all surveys error (msg: %s)", err.Error())
 		return nil, err
 	}
+	log.Print("Find all surveys, pre close rows")
 	defer rows.Close()
+	log.Print("Find all surveys, post close rows")
 
 	surveys := make([]*Survey, 0)
+	log.Print("Find all surveys, post make surveys list")
 	for rows.Next() {
+		log.Print("Iterating row...")
 		var survey Survey
 		if err := rows.Scan(&survey.Id, &survey.Description); err != nil {
 			log.Printf("Find all surveys row scan error (msg: %s)", err.Error())
 			return nil, err
 		}
+
+		log.Print("Iterating row, pre append")
 		surveys = append(surveys, &survey)
+		log.Print("Iterating row, post append")
 	}
 	log.Printf("Find all surveys success (count: %v)", len(surveys))
 	return surveys, nil
